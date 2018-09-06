@@ -2,23 +2,19 @@ const environment = process.env.NODE_ENV || 'development'
 const config = require('../knexfile')[environment]
 const connection = require('knex')(config)
 
+// Get all data.
+const getAllData = (db = connection) => {
+  return db('scores')
+    .select()
+}
+
+// Insert player score.
+const insertScore = (record, db = connection) => {
+  return db('scores')
+    .insert(record)
+}
+
 module.exports = {
-  getUsers,
-  getUser,
-  addUser
-}
-
-function getUsers (db = connection) {
-  console.log('getting all users')
-  return db('users').select()
-}
-
-function getUser (id, db = connection) {
-  console.log('getting user ', id)
-  return db('users').where('id', id).first()
-}
-
-function addUser (userData, db = connection) {
-  console.log('inserting new user: ', userData)
-  return db('users').insert(userData)
+  getAllData,
+  insertScore
 }

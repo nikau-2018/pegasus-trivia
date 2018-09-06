@@ -4,10 +4,14 @@ const db = require('../../db')
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
-  db.getFruits()
-    .then(fruits => {
-      res.json({fruits})
+// Get all records.
+router.get('/scores', (req, res) => {
+  db.getAllData()
+    .then(scores => {
+      res.send(scores)
+    })
+    .catch(err => {
+      res.status(500).send(err.message)
     })
 })
 
