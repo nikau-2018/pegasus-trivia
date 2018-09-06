@@ -8,6 +8,20 @@ const getAllData = (db = connection) => {
     .select()
 }
 
+// Get record by ID.
+const getRecordById = (id, db = connection) => {
+  return db('scores')
+    .where('scores.id', id)
+    .first()
+}
+
+// Get records by category
+const getRecordByCat = (cat, db = connection) => {
+  return db('scores')
+    .where('scores.category', cat)
+    .select()
+}
+
 // Insert player score.
 const insertScore = (record, db = connection) => {
   return db('scores')
@@ -16,5 +30,7 @@ const insertScore = (record, db = connection) => {
 
 module.exports = {
   getAllData,
-  insertScore
+  getRecordById,
+  insertScore,
+  getRecordByCat
 }
