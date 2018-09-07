@@ -14,7 +14,6 @@ class App extends React.Component {
   render () {
     return (
       <div className='app'>
-        <h1>Fullstack Boilerplate</h1>
         <div>
           <Quiz />
         </div>

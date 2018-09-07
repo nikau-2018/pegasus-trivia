@@ -1,28 +1,30 @@
 import React from 'react'
 import request from 'superagent'
-import decode from 'decode-html'
 
 export default class Quiz extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       ready: false,
-      categoryId: 9,
-      difficulty: 'medium',
+      stage: 0,
+      categoryId: 11,
+      difficulty: 'hard',
       questions: [],
+      category: '',
       selections: [],
       currentQuestion: 0,
       score: 0
     }
   }
 
-  // call the api using the parameters set in state and then place in to questions array. Set ready flag to true so we can start rendering questions. This gets everything we need to run the quiz.
+  // call the api using the parameters set in state and then place in to questions array. Set stage flag to 1 so we can start rendering questions. This gets everything we need to run the quiz.
   getQuestions () {
     request
       .get(`https://opentdb.com/api.php?amount=10&category=${this.state.categoryId}&difficulty=${this.state.difficulty}`)
       .then(res => {
         this.setState({
           questions: res.body.results,
+          category: res.body.results[0].category,
           ready: true
         })
       })
@@ -40,23 +42,36 @@ export default class Quiz extends React.Component {
 
   handleClick (selection) {
     const next = this.state.currentQuestion + 1
-    this.setState({currentQuestion: next})
+    // detect if quiz over if not increment current question number
+    if (next === 10) {
+      this.setState({stage: 2})
+    } else {
+      this.setState({currentQuestion: next})
+    }
+    // add selection to array
     const answers = this.state.selections
     answers.push(selection)
-    this.setState({selections: answers})
-    console.log(answers)
+    let currentScore = this.state.score
+    if (selection.correct) {
+      currentScore += 1
+    }
+    this.setState({
+      selections: answers,
+      score: currentScore
+    })
   }
 
-  decodeh (str) {
-    const charsToEncode = /[&"'<>]/g
-    const encodeTo = {
-      '&amp;': '&',
-      '&quot;': 'HHH',
-      '&#39;': "'",
-      '&lt;': '<',
-      '&gt;': '>'
-    }
-    return str.replace(charsToEncode, char => encodeTo[char])
+  renderSummary () {
+    return (
+      <div id='summary'>
+        <p>This is a {this.state.category} trivia quiz with 10 questions. Enjoy! 🦄</p>
+        <button onClick={() => this.handleStart()}>Start</button>
+      </div>
+    )
+  }
+
+  handleStart () {
+    this.setState({stage: 1})
   }
 
   renderQuestion () {
@@ -78,10 +93,24 @@ export default class Quiz extends React.Component {
         <h2>{current.question}</h2>
         {
           randomAnswers.map((x, i) => {
-            return <div className ='answer' key={i}><button onClick={() => this.handleClick(x)}>{this.decodeh(x.answer)}</button></div>
+            return <div className ='answer' key={i}><button onClick={() => this.handleClick(x)}>{x.answer}</button></div>
             // to use a radio button we have to wrap it in a label or it will errors
           })
         }
+      </div>
+    )
+  }
+
+  renderScore () {
+    const score = this.state.score
+    let message = 'Nice 👌'
+    if (score === 10) message = '💯'
+    else if (score < 5) message = "It's ok... try again maybe 🙊"
+
+    return (
+      <div id='score'>
+        <p>You got {score} out of 10</p>
+        <p>{message}</p>
       </div>
     )
   }
@@ -90,7 +119,9 @@ export default class Quiz extends React.Component {
     return (
       <div className='app'>
         <h1>Quiz Component</h1>
-        {this.state.ready && this.renderQuestion() }
+        {(this.state.stage === 0 && this.state.ready) && this.renderSummary()}
+        {this.state.stage === 1 && this.renderQuestion() }
+        {this.state.stage === 2 && this.renderScore()}
       </div>
     )
   }
