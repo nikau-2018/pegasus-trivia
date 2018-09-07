@@ -1,5 +1,7 @@
 import React from 'react'
 import Quiz from './Quiz'
+import Homepage from './Homepage'
+import {HashRouter as Router, Route} from 'react-router-dom'
 
 class App extends React.Component {
   constructor (props) {
@@ -8,15 +10,15 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount () {
-  }
-
   render () {
     return (
       <div className='app'>
-        <div>
-          <Quiz />
-        </div>
+        <Router>
+          <div>
+            <Route exact path='/' component={Homepage} />
+            <Route exact path='/Quiz' component={Quiz} />
+          </div>
+        </Router>
       </div>
     )
   }
