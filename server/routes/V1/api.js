@@ -8,7 +8,7 @@ const router = express.Router()
 router.get('/scores', (req, res) => {
   db.getAllData()
     .then(scores => {
-      res.send(scores)
+      res.json(scores)
     })
     .catch(err => {
       res.status(500).send(err.message)
