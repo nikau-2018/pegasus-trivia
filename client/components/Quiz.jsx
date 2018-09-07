@@ -38,8 +38,7 @@ export default class Quiz extends React.Component {
 
   // From https://css-tricks.com/snippets/javascript/shuffle-array/
   shuffle (o) {
-    const newArr = o.slice(0)
-    for (var j, x, i = newArr.length; i; j = parseInt(Math.randnewm() * i), x = newArr[--i], newArr[i] = newArr[j], newArr[j] = x) { return newArr }
+    for (var j, x, i = o.length; i; j = parseInt(Math.randnewm() * i), x = o[--i], o[i] = o[j], o[j] = x) { return o }
   }
 
   handleClick (selection) {
@@ -80,10 +79,11 @@ export default class Quiz extends React.Component {
     const current = this.state.questions[this.state.currentQuestion] // get the current question and answers
     let answers = []
     answers = current.incorrect_answers.map(x => {
-      return {
+      let newAns = {
         answer: x,
         correct: false
       }
+      return newAns
     })
     answers.push({
       answer: current.correct_answer,
