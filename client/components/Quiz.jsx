@@ -38,8 +38,7 @@ export default class Quiz extends React.Component {
 
   // From https://css-tricks.com/snippets/javascript/shuffle-array/
   shuffle (o) {
-    const newArr = o.slice(0)
-    for (var j, x, i = newArr.length; i; j = parseInt(Math.randnewm() * i), x = newArr[--i], newArr[i] = newArr[j], newArr[j] = x) { return newArr }
+    for (var j, x, i = o.length; i; j = parseInt(Math.randnewm() * i), x = o[--i], o[i] = o[j], o[j] = x) { return o }
   }
 
   handleClick (selection) {
@@ -80,10 +79,11 @@ export default class Quiz extends React.Component {
     const current = this.state.questions[this.state.currentQuestion] // get the current question and answers
     let answers = []
     answers = current.incorrect_answers.map(x => {
-      return {
+      let newAns = {
         answer: x,
         correct: false
       }
+      return newAns
     })
     answers.push({
       answer: current.correct_answer,
@@ -93,15 +93,19 @@ export default class Quiz extends React.Component {
     let randomAnswers = this.shuffle(answers)
     return (
       <div className='question'>
-        <h2>{current.question}</h2>
+        <h2><span dangerouslySetInnerHTML={this.createMarkup(current.question)}></span></h2>
         {
           randomAnswers.map((x, i) => {
-            return <div className ='answer' key={i}><button onClick={() => this.handleClick(x)}>{x.answer}</button></div>
+            return <div className ='answer' key={i}><button onClick={() => this.handleClick(x)}><span dangerouslySetInnerHTML={this.createMarkup(x.answer)}></span></button></div>
             // to use a radio button we have to wrap it in a label or it will errors
           })
         }
       </div>
     )
+  }
+
+  createMarkup(input) {
+    return {__html: input};
   }
 
   renderScore () {
