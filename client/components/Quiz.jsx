@@ -37,7 +37,8 @@ export default class Quiz extends React.Component {
 
   // From https://css-tricks.com/snippets/javascript/shuffle-array/
   shuffle (o) {
-    for (var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x) { return o }
+    const newArr = o.slice(0)
+    for (var j, x, i = newArr.length; i; j = parseInt(Math.randnewm() * i), x = newArr[--i], newArr[i] = newArr[j], newArr[j] = x) { return newArr }
   }
 
   handleClick (selection) {
@@ -76,7 +77,8 @@ export default class Quiz extends React.Component {
 
   renderQuestion () {
     const current = this.state.questions[this.state.currentQuestion] // get the current question and answers
-    const answers = current.incorrect_answers.map(x => {
+    let answers = []
+    answers = current.incorrect_answers.map(x => {
       return {
         answer: x,
         correct: false
@@ -86,8 +88,8 @@ export default class Quiz extends React.Component {
       answer: current.correct_answer,
       correct: true
     }) // add correct answer to array
-    const randomAnswers = this.shuffle(answers)
 
+    let randomAnswers = this.shuffle(answers)
     return (
       <div className='question'>
         <h2>{current.question}</h2>
@@ -108,9 +110,25 @@ export default class Quiz extends React.Component {
     else if (score < 5) message = "It's ok... try again maybe 🙊"
 
     return (
-      <div id='score'>
-        <p>You got {score} out of 10</p>
-        <p>{message}</p>
+      <div>
+        <div id='score'>
+          <p>You got {score} out of 10</p>
+          <p>{message}</p>
+        </div>
+        <div>
+          <p>{this.state.questions.map((x, i) => {
+            const message = this.state.selections[i].correct ? <span id='tick'>✔</span> : <span>❌ Correct answer was {x.correct_answer}</span>
+            return (
+              <div id='answerSummary' key={i}><h3>{x.question}</h3>
+
+                <p>You selected: {this.state.selections[i].answer}</p>
+                {message}
+              </div>
+
+            )
+          })}</p>
+          )
+        </div>
       </div>
     )
   }

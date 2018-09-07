@@ -13,6 +13,7 @@ class App extends React.Component {
   render () {
     return (
       <div className='app'>
+        <Quiz id='9'/>
         <Router>
           <div>
             <Route exact path='/' component={Homepage} />
