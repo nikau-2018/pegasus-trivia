@@ -93,15 +93,19 @@ export default class Quiz extends React.Component {
     let randomAnswers = this.shuffle(answers)
     return (
       <div className='question'>
-        <h2>{current.question}</h2>
+        <h2><span dangerouslySetInnerHTML={this.createMarkup(current.question)}></span></h2>
         {
           randomAnswers.map((x, i) => {
-            return <div className ='answer' key={i}><button onClick={() => this.handleClick(x)}>{x.answer}</button></div>
+            return <div className ='answer' key={i}><button onClick={() => this.handleClick(x)}><span dangerouslySetInnerHTML={this.createMarkup(x.answer)}></span></button></div>
             // to use a radio button we have to wrap it in a label or it will errors
           })
         }
       </div>
     )
+  }
+
+  createMarkup(input) {
+    return {__html: input};
   }
 
   renderScore () {
