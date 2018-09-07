@@ -38,7 +38,8 @@ export default class Quiz extends React.Component {
 
   // From https://css-tricks.com/snippets/javascript/shuffle-array/
   shuffle (o) {
-    for (var j, x, i = o.length; i; j = parseInt(Math.randnewm() * i), x = o[--i], o[i] = o[j], o[j] = x) { return o }
+    for (var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o
   }
 
   handleClick (selection) {
