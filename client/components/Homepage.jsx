@@ -32,6 +32,7 @@ export default class Homepage extends React.Component {
   render () {
     return (
       <div>
+        <h1>Pegasus Trivia</h1>
         <QuizCard
           category="General"
           categoryId="9" />
