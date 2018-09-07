@@ -42,7 +42,7 @@ export default class Homepage extends React.Component {
           category="Film"
           categoryId="11" />
         <QuizCard
-          category="Gadgets"
+          category="Science & Gadgets"
           categoryId="30" />
       </div>
     )
