@@ -8,7 +8,7 @@ export default class Quiz extends React.Component {
       ready: false,
       stage: 0,
       categoryId: this.props.match.params.id,
-      difficulty: 'hard',
+      difficulty: 'medium',
       questions: [],
       category: '',
       selections: [],
@@ -125,10 +125,8 @@ export default class Quiz extends React.Component {
                 <p>You selected: {this.state.selections[i].answer}</p>
                 {message}
               </div>
-
             )
           })}</p>
-          )
         </div>
       </div>
     )
@@ -137,7 +135,7 @@ export default class Quiz extends React.Component {
   render () {
     return (
       <div className='app'>
-        <h1>Quiz Component</h1>
+        <h1>{this.state.category}</h1>
         {(this.state.stage === 0 && this.state.ready) && this.renderSummary()}
         {this.state.stage === 1 && this.renderQuestion() }
         {this.state.stage === 2 && this.renderScore()}
