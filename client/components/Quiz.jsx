@@ -7,7 +7,7 @@ export default class Quiz extends React.Component {
     this.state = {
       ready: false,
       stage: 0,
-      categoryId: 11,
+      categoryId: this.props.match.params.id,
       difficulty: 'hard',
       questions: [],
       category: '',
@@ -33,6 +33,7 @@ export default class Quiz extends React.Component {
   // when the component has loaded, call getQuestions to conenct to the API and place questions in to state
   componentDidMount () {
     this.getQuestions()
+
   }
 
   // From https://css-tricks.com/snippets/javascript/shuffle-array/
