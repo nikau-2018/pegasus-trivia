@@ -1,6 +1,5 @@
 import React from 'react'
 import request from 'superagent'
-import decode from 'decode-html'
 
 export default class Quiz extends React.Component {
   constructor (props) {
